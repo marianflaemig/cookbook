@@ -2,6 +2,11 @@
 
 {% block title %}New Recipe{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('ingredientList') }}
+{% endblock %}
+
 {% block body %}
     <div class="container mx-auto p-4 max-w-2xl">
         <h1 class="text-3xl font-bold mb-6 text-gray-800">Add New Recipe</h1>
@@ -9,6 +14,8 @@
         {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'enctype': 'multipart/form-data'}}) }}
 
         <div class="space-y-6">
+
+            {# --- Recipe Details --- #}
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <h2 class="text-xl font-semibold mb-4 text-gray-700">Recipe Details</h2>
                 <div class="space-y-4">
@@ -22,6 +29,7 @@
                 </div>
             </div>
 
+            {# --- Ingredients List (Collection) --- #}
             <div class="bg-white p-6 rounded-lg shadow-md" id="ingredients-wrapper">
                 <h2 class="text-xl font-semibold mb-4 text-gray-700">Ingredients List</h2>
 
@@ -32,12 +40,34 @@
                     data-index="{{ form.recipeIngredients|length }}"
                 >
                     {% for ingredientField in form.recipeIngredients %}
-                        <div class="ingredient-item bg-gray-50 p-4 rounded-lg mb-3 flex items-start space-x-3 border border-gray-200">
-                            <div class="flex-grow space-y-2">
-                                {{ form_widget(ingredientField) }}
+                        {# UPDATED GRID LAYOUT FOR INGREDIENT FIELDS #}
+                        <div
+                            class="ingredient-item bg-gray-50 p-4 rounded-lg mb-3 flex items-start space-x-3 border border-gray-200">
+
+                            {# Use a grid/flex layout for better organization inside the row #}
+                            <div class="grid grid-cols-5 gap-3 flex-grow space-y-0">
+                                {# Ingredient Name takes 3/5 space #}
+                                <div class="col-span-3">
+                                    {{ form_row(ingredientField.ingredient) }}
+                                </div>
+                                {# Quantity takes 1/5 space #}
+                                <div class="col-span-1">
+                                    {{ form_row(ingredientField.quantity) }}
+                                </div>
+                                {# Unit takes 1/5 space #}
+                                <div class="col-span-1">
+                                    {{ form_row(ingredientField.unit) }}
+                                </div>
                             </div>
-                            <button type="button" class="remove-ingredient-btn text-red-500 hover:text-red-700 mt-2 p-1 rounded-full hover:bg-red-100 transition duration-150" aria-label="Remove ingredient">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3"></path></svg>
+
+                            <button type="button"
+                                    class="remove-ingredient-btn text-red-500 hover:text-red-700 mt-2 p-1 rounded-full hover:bg-red-100 transition duration-150"
+                                    aria-label="Remove ingredient">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3"></path>
+                                </svg>
                             </button>
                         </div>
                     {% endfor %}
@@ -45,13 +75,18 @@
 
                 <button type="button"
                         id="add-ingredient-button"
-                        class="mt-4 w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition duration-300 shadow-md flex items-center justify-center">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                        class="mt-4 w-full px-4 py-2 bg-[#9b59b6] text-white font-semibold rounded-lg hover:bg-[#834ea2] transition duration-300 shadow-md flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
                     Add Ingredient
                 </button>
             </div>
 
-            <button type="submit" class="w-full py-3 bg-green-600 text-white font-bold text-xl rounded-lg hover:bg-green-700 transition duration-300 shadow-xl">
+            <button type="submit"
+                    class="w-full py-3 bg-[#4CAF50] text-white font-bold text-xl rounded-lg hover:bg-[#388E3C] transition duration-300 shadow-xl">
                 Save Recipe
             </button>
         </div>
@@ -60,57 +95,4 @@
         {{ form_end(form) }}
 
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const list = document.getElementById('ingredient-fields-list');
-            const addButton = document.getElementById('add-ingredient-button');
-
-            // Function to add the 'remove' button functionality to a new element
-            const addDeleteButtonHandler = (item) => {
-                item.querySelector('.remove-ingredient-btn').addEventListener('click', (e) => {
-                    e.preventDefault();
-                    item.remove();
-                });
-            };
-
-            // Initialize delete handlers for existing elements (if any)
-            list.querySelectorAll('.ingredient-item').forEach(addDeleteButtonHandler);
-
-            // Get the prototype (the template for a new field)
-            const prototype = list.dataset.prototype;
-            let index = parseInt(list.dataset.index || list.children.length);
-
-            addButton.addEventListener('click', (e) => {
-                e.preventDefault();
-
-                // Create a new form row based on the prototype
-                let newForm = prototype.replace(/__name__/g, index);
-                index++;
-
-                // Wrap the new form in the required structural HTML
-                const wrapper = document.createElement('div');
-                wrapper.innerHTML = newForm;
-                wrapper.firstChild.classList.add('ingredient-item', 'bg-gray-50', 'p-4', 'rounded-lg', 'mb-3', 'flex', 'items-start', 'space-x-3', 'border', 'border-gray-200');
-
-                // Append the remove button HTML
-                const deleteButtonHtml = `
-                    <button type="button" class="remove-ingredient-btn text-red-500 hover:text-red-700 mt-2 p-1 rounded-full hover:bg-red-100 transition duration-150" aria-label="Remove ingredient">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3"></path></svg>
-                    </button>
-                `;
-
-                const flexGrowDiv = wrapper.firstChild.querySelector('div:first-child');
-                flexGrowDiv.classList.add('flex-grow', 'space-y-2'); // Ensure structure matches existing fields
-
-                wrapper.firstChild.insertAdjacentHTML('beforeend', deleteButtonHtml);
-
-                // Add event handler and append to the list
-                addDeleteButtonHandler(wrapper.firstChild);
-                list.appendChild(wrapper.firstChild);
-
-                list.dataset.index = index;
-            });
-        });
-    </script>
 {% endblock %}

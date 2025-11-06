@@ -16,20 +16,24 @@ class RecipeIngredientType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        // Define common classes for form inputs/selects
+        $inputClasses = 'mt-1 w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-[#9b59b6] focus:border-[#9b59b6] transition duration-150';
+
         $builder
             ->add('quantity', NumberType::class, [
                 'label' => 'Quantity',
                 'html5' => true,
                 'attr' => [
+                    // Adjusted width to w-full so it works better in the flex container
                     'placeholder' => 'e.g. 250',
-                    'class' => 'text-right ml-6 mt-1 w-max border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
+                    'class' => $inputClasses . ' text-right'
                 ],
             ])
             ->add('unit', TextType::class, [
                 'label' => 'Unit',
                 'attr' => [
                     'placeholder' => 'e.g. grams, cups',
-                    'class' => 'ml-6 mt-1 w-max border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
+                    'class' => $inputClasses
                 ],
             ])
             ->add('ingredient', EntityType::class, [
@@ -38,7 +42,7 @@ class RecipeIngredientType extends AbstractType
                 'label' => 'Ingredient',
                 'attr' => [
                     'placeholder' => 'Choose an Ingredient',
-                    'class' => 'ml-6 mt-1 w-max border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
+                    'class' => $inputClasses // Applies styling to the select dropdown
                 ],
             ]);
     }

@@ -2,118 +2,55 @@
 
 {% block body %}
 
-    <div class="max-w-4xl mx-auto p-4 space-y-8">
-        <h1 class="text-3xl font-extrabold text-gray-900 text-center mb-6">Your Cookbook</h1>
+    <div class="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8 space-y-8">
 
-        {% for recipe in recipes %}
-            <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-                <h2 class="font-bold text-center text-2xl mb-4 text-indigo-700">
-                    {{ recipe.title }}
-                </h2>
+        {# Conditional Title for Search Results #}
+        {% if search_phrase is defined and search_phrase is not empty %}
+            <h1 class="text-3xl font-extrabold text-[#1a1a1a] border-b-2 border-gray-100 pb-2">
+                Search Results for: <span class="text-[#9b59b6]">{{ search_phrase }}</span>
+            </h1>
+            <p class="text-gray-600">
+                Found {{ recipes|length }} result{% if recipes|length != 1 %}s{% endif %}.
+            </p>
+        {% else %}
+            <h1 class="text-3xl font-extrabold text-[#1a1a1a] border-b-2 border-gray-100 pb-2">
+                All Recipes
+            </h1>
+        {% endif %}
 
-                {# Recipe Metadata (Prep/Cook Time) #}
-                <div class="flex justify-center space-x-6 text-sm text-gray-500 mb-6">
-                    {% if recipe.prepTime %}
-                        <span>Prep: <span class="font-semibold text-gray-700">{{ recipe.prepTime }} min</span></span>
-                    {% endif %}
-                    {% if recipe.cookTime %}
-                        <span>Cook: <span class="font-semibold text-gray-700">{{ recipe.cookTime }} min</span></span>
-                    {% endif %}
-                </div>
+        {# Recipe Grid #}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
 
-                <div class="flex flex-col md:flex-row gap-6 align-top">
+            {% for recipe in recipes %}
+                {# Use the reusable card component #}
+                {% include 'main/recipe_card.html.twig' with {
+                    id: recipe.id,
+                    title: recipe.title,
+                    prep: recipe.prepTime,
+                    cook: recipe.cookTime,
+                    route: 'show_recipe',
+                    image_url: recipe.image
+                } %}
+            {% endfor %}
 
-                    {# Recipe Image #}
-                    <div class="flex-shrink-0">
-                        {% if recipe.image %}
-                            <img class="size-80 object-cover rounded-lg shadow-md"
-                                 src="/images/recipes/{{ asset(recipe.image) }}"
-                                 alt="{{ recipe.title }}">
-                        {% else %}
-                            {# Fallback image for safety #}
-                            <img class="size-80 object-cover rounded-lg shadow-md bg-gray-200 p-8"
-                                 src="{{ asset('/images/recipes/spatula-4469991_1280.jpg') }}"
-                                 alt="No image available">
-                        {% endif %}
-                    </div>
+        </div>
 
-                    {# Ingredients Table #}
-                    <div class="w-full md:w-2/3">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-3">Ingredients</h3>
-                        <table class="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
-                            <thead class="bg-indigo-50">
-                            <tr>
-                                <th class="p-3 text-left text-sm font-medium text-gray-600 border-r border-gray-300">
-                                    Ingredient
-                                </th>
-                                <th class="p-3 text-left text-sm font-medium text-gray-600 border-r border-gray-300">
-                                    Amount
-                                </th>
-                                <th class="p-3 text-left text-sm font-medium text-gray-600">
-                                    Unit
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for entry in recipe.recipeIngredients %}
-                                <tr class="odd:bg-white even:bg-gray-50">
-                                    {# FIXED PATH: using entry.ingredient.name #}
-                                    <td class="p-3 border-r border-gray-300">
-                                        {{ entry.ingredient.name }}
-                                    </td>
-                                    <td class="p-3 border-r border-gray-300 font-mono">
-                                        {{ entry.quantity }}
-                                    </td>
-                                    <td class="p-3">
-                                        {{ entry.unit }}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                {# Description / Instructions #}
-                <div class="mt-6 pt-4 border-t border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Instructions</h3>
-                    <div class="text-gray-600 whitespace-pre-wrap leading-relaxed">
-                        {{ recipe.description }}
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="p-4 bg-gray-50 border-t border-gray-200 flex justify-end space-x-3">
-                    <a href="{{ path('edit_recipe', {'id': recipe.id}) }}"
-                       class="px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
-                        Edit
-                    </a>
-
-                    <!-- Secure Delete Form (FIXED) -->
-                    {% if deleteForms[recipe.id] is defined %}
-                        {% set deleteForm = deleteForms[recipe.id] %}
-
-                        {# Use form_start to correctly render action URL and POST method #}
-                        {{ form_start(deleteForm, {
-                            'attr': {
-                                'class': 'inline-block',
-                                'onsubmit': "return confirm('Are you sure you want to delete this recipe?');"
-                            }
-                        }) }}
-
-                        {# form_widget renders the hidden _method and _token fields #}
-                        {{ form_widget(deleteForm) }}
-
-                        <button type="submit" class="px-3 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700">
-                            Delete
-                        </button>
-
-                        {# Use render_rest: false to prevent extra <div> wrapper #}
-                        {{ form_end(deleteForm, {render_rest: false}) }}
-                    {% endif %}
-                </div>
+        {# No Results Found Message #}
+        {% if recipes|length == 0 %}
+            <div class="p-8 text-center bg-white rounded-xl shadow-lg mt-12">
+                <h3 class="text-xl font-semibold text-gray-700">No recipes found.</h3>
+                <p class="text-gray-500 mt-2">Try searching for a different ingredient or dish name.</p>
             </div>
-        {% endfor %}
+        {% endif %}
+
     </div>
 
+{% endblock %}
+
+{% block title %}
+    {% if search_phrase is defined and search_phrase is not empty %}
+        Search Results
+    {% else %}
+        All Recipes
+    {% endif %}
 {% endblock %}

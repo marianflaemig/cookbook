@@ -16,37 +16,50 @@ class RecipeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        // Define reusable input classes for consistency
+        $inputClasses = 'mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-[#9b59b6] focus:border-[#9b59b6] transition duration-150';
+
         $builder
             ->add('title', TextType::class, [
                 'attr' => [
-                    'class' => 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500',
+                    'class' => $inputClasses,
+                    'placeholder' => 'e.g., Grandma\'s Best Apple Pie'
                 ]
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Instructions',
                 'attr' => [
-                    'rows' => 6,
-                    'class' => 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
+                    'rows' => 8, // Increased rows for better usability
+                    'class' => $inputClasses
                 ],
             ])
             ->add('prepTime', IntegerType::class, [
                 'label' => 'Prep time (minutes)',
                 'required' => false,
                 'attr' => [
-                    'class' => 'mt-1 block w-max border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
+                    // Adjusted width for small fields
+                    'class' => 'mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-[#9b59b6] focus:border-[#9b59b6] transition duration-150',
+                    'placeholder' => 'e.g. 30'
                 ],
             ])
             ->add('cookTime', IntegerType::class, [
                 'label' => 'Cook time (minutes)',
                 'required' => false,
                 'attr' => [
-                    'class' => 'mt-1 block w-max border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
+                    // Adjusted width for small fields
+                    'class' => 'mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-[#9b59b6] focus:border-[#9b59b6] transition duration-150',
+                    'placeholder' => 'e.g. 75'
                 ],
             ])
+            // FileType needs specialized classes in Twig since field rendering is complex
             ->add('image', FileType::class, [
                 'label' => 'Recipe Photo (JPG/PNG)',
                 'mapped' => false,
                 'required' => false,
+                'attr' => [
+                    // Tailwind classes for File input styling (note: may require custom CSS for full effect)
+                    'class' => 'mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#f9f0fd] file:text-[#9b59b6] hover:file:bg-[#e6d0f5] cursor-pointer'
+                ]
             ])
             ->add('recipeIngredients', CollectionType::class, [
                 'entry_type' => RecipeIngredientType::class,
