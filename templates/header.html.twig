@@ -1,23 +1,23 @@
-<header class="bg-white shadow-md sticky top-0 z-10 border-b border-gray-100" x-data="{ open: false }">
+<header class="bg-white shadow-md sticky top-0 z-10 border-b border-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {# Desktop Layout (sm:flex) - Reverting to Flex for simpler horizontal distribution #}
-        <div class="hidden sm:flex justify-between items-center h-20">
 
-            {# Logo / Branding - Left Side (Approx 20% width) #}
+        {# Desktop Layout (sm:flex) - Unchanged #}
+        <div class="hidden sm:flex justify-between items-center h-20">
+            {# ... (Desktop Logo, Search Bar, and Navigation Links remain the same) ... #}
+
+            {# Logo #}
             <div class="flex-shrink-0 w-1/5">
                 <a href="{{ path('index') }}" class="text-2xl font-bold tracking-tight text-[#1a1a1a]">
                     Cookbook
                 </a>
             </div>
 
-            {# Search Bar - Center (Approx 40-50% width) #}
+            {# Search Bar #}
             <div class="flex justify-center w-2/5 max-w-lg">
                 <form action="{{ path('search_recipe') }}" method="get" class="flex w-full">
                     <label for="search_phrase" class="sr-only">Search for a recipe...</label>
                     <input type="text" name="search_phrase" id="search_phrase" placeholder="Search recipes..."
                            class="flex-grow bg-gray-100 p-2.5 text-sm rounded-s-lg border border-gray-200 focus:border-[#9b59b6] focus:ring-[#9b59b6] outline-none transition duration-150 ease-in-out">
-
-                    {# Adjusted search button color to match the Cookbook accent: #9b59b6 #}
                     <button type="submit"
                             class="p-2.5 text-sm font-medium text-white bg-[#9b59b6] rounded-e-lg border border-[#9b59b6] hover:bg-[#834ea2] focus:ring-4 focus:outline-none focus:ring-[#c296d8] transition duration-150 ease-in-out">
                         <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -28,7 +28,7 @@
                 </form>
             </div>
 
-            {# Navigation Links - Right Side (Approx 30-40% width) #}
+            {# Navigation Links #}
             <nav class="flex justify-end items-center space-x-6">
                 {% set nav_items = [
                     {'label': 'Recipes', 'route': 'show_recipes'},
@@ -55,7 +55,7 @@
             </nav>
         </div>
 
-        {# Mobile Layout (flex) - Search removed for space, only Logo and Hamburger #}
+        {# Mobile Layout (flex) #}
         <div class="flex sm:hidden justify-between items-center h-16">
             {# Logo #}
             <a href="{{ path('show_recipes') }}" class="text-xl font-bold tracking-tight text-[#1a1a1a]">
@@ -64,14 +64,17 @@
 
             {# Mobile Menu Button - Hamburger Icon #}
             <div class="flex items-center">
-                <button @click="open = !open" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#9b59b6]" aria-controls="mobile-menu" aria-expanded="false">
+                {# ADDED ID: 'menu-toggle-button' #}
+                <button id="menu-toggle-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#9b59b6]" aria-controls="mobile-menu" aria-expanded="false">
                     <span class="sr-only">Open main menu</span>
-                    {# Icon when menu is closed #}
-                    <svg x-show="!open" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    {# Icon when menu is closed (Hamburger) #}
+                    {# ADDED ID: 'icon-closed' #}
+                    <svg id="icon-closed" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
-                    {# Icon when menu is open #}
-                    <svg x-show="open" class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    {# Icon when menu is open (X) #}
+                    {# ADDED ID: 'icon-open' AND START HIDDEN #}
+                    <svg id="icon-open" class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
@@ -79,8 +82,9 @@
         </div>
     </div>
 
-    {# Mobile Menu - Hidden by default, includes search for mobile #}
-    <div x-show="open" class="sm:hidden" id="mobile-menu" x-cloak>
+    {# Mobile Menu - Now starts HIDDEN #}
+    {# ADDED ID: 'mobile-menu' AND TAILWIND CLASS: 'hidden' #}
+    <div id="mobile-menu" class="sm:hidden hidden">
         <div class="px-2 pt-2 pb-3 space-y-1">
             {# Mobile Search Bar #}
             <form action="{{ path('search_recipe') }}" method="get" class="flex w-full mb-4">

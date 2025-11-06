@@ -13,16 +13,10 @@ Accepts:
 
     {# Image Area #}
     <a href="{{ path(route, {'id': id}) }}">
-        {% if image_url is defined %}
-            {# Placeholder for Image #}
+        {% if image_url is defined and image_url is not empty %}
             <div class="h-48 w-full bg-gray-200 flex items-center justify-center text-gray-500 font-medium">
-
-
-                [Image of {{ title }}]
-
+                <img src="{{ asset('images/recipes/' ~ image_url) }}" alt="{{ title }}" class="w-full h-48 object-cover">
             </div>
-            {# You would replace the placeholder div with a real image tag: #}
-            {# <img src="{{ asset(image_url) }}" alt="{{ title }}" class="w-full h-48 object-cover"> #}
         {% else %}
             <div class="h-48 w-full bg-gray-200 flex items-center justify-center text-gray-500 font-medium">
                 No Image Available

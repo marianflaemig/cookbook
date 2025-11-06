@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-
+Cooking Made Simple
 {% endblock %}
 
 
@@ -36,10 +36,10 @@
                     </div>
                 </div>
 
-                {# Hero Image (Conceptual) #}
                 <div class="mt-10 md:mt-0">
-                    <div class="h-96 w-full rounded-xl overflow-hidden shadow-2xl">
-                        <img src="{{ asset('images/Gemini_Generated_Image_je1v74je1v74je1v.png') }}" alt="">
+                    <div class="h-96 w-full rounded-xl overflow-hidden shadow-2xl mask-radial-at-center">
+                        <img class=""
+                             src="{{ asset('images/Gemini_Generated_Image_je1v74je1v74je1v.png') }}" alt="">
                     </div>
                 </div>
 
@@ -62,7 +62,7 @@
                 prep: recipe1.prepTime,
                 cook: recipe1.cookTime,
                 route: 'show_recipe',
-                image_url: ''
+                image_url: recipe1.image
             } %}
 
             {# Featured Recipe Card Random Recipe 2 #}
@@ -72,7 +72,7 @@
                 prep: recipe2.prepTime,
                 cook: recipe2.cookTime,
                 route: 'show_recipe',
-                image_url: ''
+
             } %}
 
             {# Featured Recipe Card Random Recipe 3 #}
@@ -82,7 +82,7 @@
                 prep: recipe3.prepTime,
                 cook: recipe3.cookTime,
                 route: 'show_recipe',
-                image_url: ''
+                image_url: recipe3.image
             } %}
 
         </div>

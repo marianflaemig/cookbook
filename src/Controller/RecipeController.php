@@ -29,6 +29,20 @@ class RecipeController extends AbstractController
         $this->recipeRepository = $recipeRepository;
     }
 
+    #[Route('/recipe/{id}', name: 'show_recipe', methods: ['GET'])]
+    public function show(int $id): Response
+    {
+        $recipe = $this->recipeRepository->find($id);
+
+        $deleteForm = $this->_createDeleteForm($recipe)->createView();
+
+        return $this->render('recipe/show.html.twig', [
+            'recipe' => $recipe,
+            'deleteForm' => $deleteForm,
+            'activePage' => ''
+        ]);
+    }
+
     #[Route('/recipes', name: 'show_recipes', methods: ['GET'])]
     public function showALl(): Response
     {
@@ -43,20 +57,6 @@ class RecipeController extends AbstractController
             'recipes' => $recipes,
             'deleteForms' => $deleteForms,
             'activePage' => 'Recipes'
-        ]);
-    }
-
-    #[Route('/show/{id}', name: 'show_recipe', methods: ['GET'])]
-    public function show(int $id): Response
-    {
-        $recipe = $this->recipeRepository->find($id);
-
-        $deleteForm = $this->_createDeleteForm($recipe)->createView();
-
-        return $this->render('recipe/show.html.twig', [
-            'recipe' => $recipe,
-            'deleteForm' => $deleteForm,
-            'activePage' => ''
         ]);
     }
 
@@ -99,7 +99,7 @@ class RecipeController extends AbstractController
                     return $this->redirectToRoute('create_recipe');
                 }
 
-                $recipe->setImage('/images/recipes/' . $newFilename);
+                $recipe->setImage($newFilename);
             }
 
             $this->entityManager->persist($recipe);
