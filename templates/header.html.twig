@@ -1,7 +1,7 @@
 <header class="bg-white shadow-md sticky top-0 z-10 border-b border-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {# Desktop Layout (sm:flex) - Unchanged #}
+        {# Desktop Layout (sm:flex) #}
         <div class="hidden sm:flex justify-between items-center h-20">
             {# ... (Desktop Logo, Search Bar, and Navigation Links remain the same) ... #}
 
@@ -58,22 +58,19 @@
         {# Mobile Layout (flex) #}
         <div class="flex sm:hidden justify-between items-center h-16">
             {# Logo #}
-            <a href="{{ path('show_recipes') }}" class="text-xl font-bold tracking-tight text-[#1a1a1a]">
+            <a href="{{ path('index') }}" class="text-xl font-bold tracking-tight text-[#1a1a1a]">
                 Cookbook
             </a>
 
             {# Mobile Menu Button - Hamburger Icon #}
             <div class="flex items-center">
-                {# ADDED ID: 'menu-toggle-button' #}
                 <button id="menu-toggle-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#9b59b6]" aria-controls="mobile-menu" aria-expanded="false">
                     <span class="sr-only">Open main menu</span>
                     {# Icon when menu is closed (Hamburger) #}
-                    {# ADDED ID: 'icon-closed' #}
                     <svg id="icon-closed" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                     {# Icon when menu is open (X) #}
-                    {# ADDED ID: 'icon-open' AND START HIDDEN #}
                     <svg id="icon-open" class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -82,9 +79,8 @@
         </div>
     </div>
 
-    {# Mobile Menu - Now starts HIDDEN #}
-    {# ADDED ID: 'mobile-menu' AND TAILWIND CLASS: 'hidden' #}
-    <div id="mobile-menu" class="sm:hidden hidden">
+    {# Mobile Menu - Starts HIDDEN #}
+    <div id="mobile-menu" class="sm:hidden max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
         <div class="px-2 pt-2 pb-3 space-y-1">
             {# Mobile Search Bar #}
             <form action="{{ path('search_recipe') }}" method="get" class="flex w-full mb-4">
@@ -101,7 +97,7 @@
 
             {# Mobile Navigation Links #}
             {% for item in nav_items %}
-                {% set is_active = (item.label == 'Recipes') ? true : false %}
+                {% set is_active = (item.label == activePage) ? true : false %}
                 <a href="{{ path(item.route) }}"
                    class="
                        block pl-3 pr-4 py-2 border-l-4 text-base font-medium

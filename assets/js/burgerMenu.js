@@ -12,16 +12,24 @@ document.addEventListener('DOMContentLoaded', function() {
     if (menuButton && mobileMenu && iconClosed && iconOpen) {
         menuButton.addEventListener('click', function() {
 
-            // Toggle the 'hidden' Tailwind class on the mobile menu
-            mobileMenu.classList.toggle('hidden');
+            const isOpen = mobileMenu.classList.contains('max-h-screen');
 
-            // Toggle the 'hidden' class on the icons to switch them
+            // Toggle max-height classes for smooth transition
+            if (isOpen) {
+                // Closing: Transition to max-h-0
+                mobileMenu.classList.remove('max-h-screen');
+                mobileMenu.classList.add('max-h-0');
+                menuButton.setAttribute('aria-expanded', 'false');
+            } else {
+                // Opening: Transition to max-h-screen (a large value to fit content)
+                mobileMenu.classList.remove('max-h-0');
+                mobileMenu.classList.add('max-h-screen');
+                menuButton.setAttribute('aria-expanded', 'true');
+            }
+
+            // Toggle the 'hidden' class on the icons (still works instantly, which is fine for icons)
             iconOpen.classList.toggle('hidden');
             iconClosed.classList.toggle('hidden');
-
-            // Update ARIA attribute for accessibility
-            const isExpanded = mobileMenu.classList.contains('hidden') ? 'false' : 'true';
-            menuButton.setAttribute('aria-expanded', isExpanded);
         });
     }
 });

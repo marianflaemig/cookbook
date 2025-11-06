@@ -7,7 +7,6 @@ namespace App\Controller;
 use App\Form\RecipeIngredientType;
 use App\Repository\RecipeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -40,7 +39,6 @@ class MainController extends AbstractController
     {
         return $this->render('main/categories.html.twig', [
             'activePage' => 'Categories'
-
         ]);
     }
 
