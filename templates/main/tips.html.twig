@@ -1,0 +1,126 @@
+{#
+Dummy Content for the Tips & Techniques Page.
+Uses Tailwind CSS for a clean, readable layout.
+#}
+{% extends 'base.html.twig' %}
+{% block body %}
+    {# Main Content Container #}
+    <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+
+        {# Page Title #}
+        <h1 class="text-4xl font-extrabold text-[#1a1a1a] mb-4 border-b-2 border-gray-100 pb-2">
+            Tips & Techniques: Elevate Your Cooking
+        </h1>
+        <p class="text-xl text-gray-600 mb-10">
+            Essential guidance and pro-tips to help every home cook master their kitchen skills.
+        </p>
+
+        {# Section 1: Knife Skills #}
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold text-[#333333] mb-6">1. Knife Skills: The Foundation of Prep</h2>
+
+            <div class="space-y-6">
+                {# Tip 1 #}
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-[#9b59b6]">
+                    <h3 class="text-xl font-semibold text-[#1a1a1a] mb-2">The Claw Grip (Safety First)</h3>
+                    <p class="text-gray-700">
+                        Always **curl your fingertips inward**, holding the food with your knuckles flat against the
+                        knife blade. This acts as a shield, protecting your fingers and ensuring uniform, consistent
+                        cuts.
+                    </p>
+                </div>
+
+                {# Tip 2 #}
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-gray-300">
+                    <h3 class="text-xl font-semibold text-[#1a1a1a] mb-2">Sharpen Often, Hone Daily</h3>
+                    <p class="text-gray-700">
+                        Use a **honing steel** (the rod) before every cooking session to realign the edge of your blade.
+                        Use a **whetstone or sharpener** (to remove metal) only every few months when the knife is truly
+                        dull.
+                    </p>
+                </div>
+
+                {# Tip 3 #}
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-gray-300">
+                    <h3 class="text-xl font-semibold text-[#1a1a1a] mb-2">The Rocking Motion</h3>
+                    <p class="text-gray-700">
+                        For herbs and smaller vegetables, use a smooth **rocking motion**, keeping the tip of the knife
+                        in contact with the cutting board. This minimizes bruising and maximizes efficiency.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        {# Section 2: Mastering Basic Flavor #}
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold text-[#333333] mb-6">2. Mastering Basic Flavor</h2>
+
+            {# Pro Tip Box (using accent color) #}
+            <div class="bg-[#f9f0fd] border-l-4 border-[#9b59b6] p-4 mb-8 rounded-r-lg">
+                <p class="text-lg font-medium text-gray-800">
+                    <span class="font-bold text-[#9b59b6]">Pro Tip:</span> The key to almost every dish is balancing the
+                    5 tastes. Taste your food *before* serving and adjust these four ingredients: **Salt**, **Acid**
+                    (lemon, vinegar), **Sweet** (sugar, honey), and **Heat** (pepper, chili).
+                </p>
+            </div>
+
+            {# Flavor Tips Grid #}
+            <div class="grid md:grid-cols-2 gap-8">
+                {# Tip: Layering Salt #}
+                <div>
+                    <h4 class="text-xl font-semibold text-[#1a1a1a] mb-2">Layer Your Salt</h4>
+                    <p class="text-gray-700">
+                        Don't add all the salt at the end. Season meats and vegetables at the **beginning** of cooking,
+                        season sauces and liquids in the **middle**, and adjust one last time right before serving.
+                    </p>
+                </div>
+
+                {# Tip: Aromatics #}
+                <div>
+                    <h4 class="text-xl font-semibold text-[#1a1a1a] mb-2">Aromatics: Start Cold with Oil</h4>
+                    <p class="text-gray-700">
+                        When sautéing garlic and onions, start them in a **cold pan** with oil, then turn up the heat
+                        gradually. This gently draws out their flavor and prevents the garlic from burning.
+                    </p>
+                </div>
+
+                {# Tip: Herb Ratio #}
+                <div>
+                    <h4 class="text-xl font-semibold text-[#1a1a1a] mb-2">Fresh vs. Dried Herb Rule</h4>
+                    <p class="text-gray-700">
+                        The standard conversion is a **3-to-1 ratio**. If a recipe calls for 1 teaspoon of **dried
+                        herbs**, substitute it with 1 tablespoon of **fresh herbs**.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        {# Section 3: Essential Techniques #}
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold text-[#333333] mb-6">3. Essential Cooking Techniques</h2>
+
+            <ul class="list-disc list-inside space-y-4 text-gray-700 pl-4">
+                <li class="font-medium text-[#1a1a1a]">Searing and Deglazing
+                    <p class="text-sm font-normal text-gray-600 mt-1">
+                        Ensure your pan is **hot** and your protein is **dry** to get a perfect crust. After searing,
+                        pour in a liquid (stock or wine) to scrape up the browned bits (**fond**) for an instant,
+                        flavorful sauce.
+                    </p>
+                </li>
+                <li class="font-medium text-[#1a1a1a]">Don't Crowd the Pan
+                    <p class="text-sm font-normal text-gray-600 mt-1">
+                        When searing or sautéing, if you overload the pan, the temperature drops and the food will
+                        **steam** instead of browning. Work in small batches if needed.
+                    </p>
+                </li>
+                <li class="font-medium text-[#1a1a1a]">Rest Your Meat
+                    <p class="text-sm font-normal text-gray-600 mt-1">
+                        After roasting or grilling, always let meat rest for **5-10 minutes** under a loose foil tent.
+                        This allows the internal juices to redistribute, resulting in a tender and moister dish.
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}

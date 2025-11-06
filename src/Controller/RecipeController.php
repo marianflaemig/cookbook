@@ -10,10 +10,8 @@ use App\Form\RecipeType;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\Forms;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,13 +23,11 @@ class RecipeController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
     private RecipeRepository $recipeRepository;
-    private FormFactoryInterface $formFactory;
 
-    public function __construct(EntityManagerInterface $entityManager, RecipeRepository $recipeRepository, FormFactoryInterface $formFactory)
+    public function __construct(EntityManagerInterface $entityManager, RecipeRepository $recipeRepository)
     {
         $this->entityManager = $entityManager;
         $this->recipeRepository = $recipeRepository;
-        $this->formFactory = $formFactory;
     }
 
     #[Route('/recipes', name: 'show_recipes', methods: ['GET'])]
@@ -47,7 +43,27 @@ class RecipeController extends AbstractController
         return $this->render('recipe/index.html.twig', [
             'recipes' => $recipes,
             'deleteForms' => $deleteForms,
+            'active_page' => 'Recipes'
         ]);
+    }
+
+    #[Route('/show/{id}', name: 'show_recipe', methods: ['GET'])]
+    public function show(int $id): Response
+    {
+        $recipe = $this->recipeRepository->find($id);
+
+        $deleteForm = $this->_createDeleteForm($recipe)->createView();
+
+        return $this->render('recipe/show.html.twig', [
+            'recipe' => $recipe,
+            'deleteForm' => $deleteForm,
+        ]);
+    }
+
+    #[Route('/search/{$searchPhrase}', name: 'search_recipe', methods: ['GET'])]
+    public function search(Request $request, string $searchPhrase): Response
+    {
+
     }
 
     #[Route('/create', name: 'create_recipe')]
@@ -127,6 +143,8 @@ class RecipeController extends AbstractController
                 } catch (FileException $e) {
                     $this->addFlash('error', 'Could not upload file: ' . $e->getMessage());
                 }
+
+                $recipe->setImage($newFilename);
             }
             $this->entityManager->persist($recipe);
             $this->entityManager->flush();
@@ -175,11 +193,11 @@ class RecipeController extends AbstractController
 
     private function _createDeleteForm(Recipe $recipe): FormInterface
     {
-        return $this->createForm(DeleteRecipeType::class, $recipe, [
+        return $this->createForm(DeleteRecipeType::class, null, [
             'method' => 'DELETE',
             'action' => $this->generateUrl('delete_recipe', ['id' => $recipe->getId()]),
             'csrf_protection' => true,
-
+            'csrf_token_id' => 'delete' . $recipe->getId(),
         ]);
     }
 }

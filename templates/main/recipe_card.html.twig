@@ -1,0 +1,73 @@
+{#
+Reusable Recipe Card Component.
+Accepts:
+  - id: The id of the recipe (int)
+  - title: The name of the recipe (string)
+  - prep: The preparation time (string)
+  - cook: The cooking time (string)
+  - route: The Twig route name for the recipe detail page (string)
+  - image_url (optional): URL or asset path for the recipe photo (string)
+#}
+
+<div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+
+    {# Image Area #}
+    <a href="{{ path(route, {'id': id}) }}">
+        {% if image_url is defined %}
+            {# Placeholder for Image #}
+            <div class="h-48 w-full bg-gray-200 flex items-center justify-center text-gray-500 font-medium">
+
+
+                [Image of {{ title }}]
+
+            </div>
+            {# You would replace the placeholder div with a real image tag: #}
+            {# <img src="{{ asset(image_url) }}" alt="{{ title }}" class="w-full h-48 object-cover"> #}
+        {% else %}
+            <div class="h-48 w-full bg-gray-200 flex items-center justify-center text-gray-500 font-medium">
+                No Image Available
+            </div>
+        {% endif %}
+    </a>
+
+    {# Card Content #}
+    <div class="p-5">
+
+        {# Prep/Cook Times #}
+        <div class="flex justify-between text-xs font-semibold text-gray-500 mb-2">
+            <span class="flex items-center space-x-1">
+                <svg class="w-4 h-4 text-[#9b59b6]" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                     xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round"
+                                                              stroke-width="2"
+                                                              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span>Prep: {{ prep }}</span>
+            </span>
+            <span class="flex items-center space-x-1">
+                <svg class="w-4 h-4 text-[#9b59b6]" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                     xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round"
+                                                              stroke-width="2"
+                                                              d="M10 20l4-16m4 4l4 4-4 4M6 16L2 12l4-4"></path></svg>
+                <span>Cook: {{ cook }}</span>
+            </span>
+        </div>
+
+        {# Title and Link #}
+        <h3 class="text-xl font-bold text-[#1a1a1a] mb-3 truncate">
+            <a href="{{ path(route, {'id': id}) }}" class="hover:text-[#9b59b6] transition duration-150">
+                {{ title }}
+            </a>
+        </h3>
+
+        {# View Recipe Button #}
+        <a href="{{ path(route, {'id': id}) }}"
+           class="inline-flex items-center text-sm font-medium text-white bg-[#9b59b6] hover:bg-[#834ea2] px-4 py-2 rounded-full transition duration-150">
+            View Recipe
+            {# Arrow Icon #}
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+        </a>
+    </div>
+</div>

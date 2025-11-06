@@ -1,0 +1,76 @@
+{#
+Footer template for the Cookbook theme.
+Uses a multi-column structure for links, contact, and legal information.
+#}
+<footer class="bg-[#f7f7f7] mt-12 border-t border-gray-200">
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+
+            {# Column 1: Logo & About #}
+            <div>
+                <h3 class="text-xl font-bold tracking-tight text-[#1a1a1a] mb-4">
+                    Cookbook
+                </h3>
+                <p class="text-sm text-gray-600 mb-4">
+                    Your kitchen companion for classic, family-favorite recipes.
+                </p>
+                {# Copyright (placed here for better mobile spacing) #}
+                <p class="text-xs text-gray-500 mt-6">
+                    &copy; {{ "now"|date("Y") }} Cookbook Recipes Inc.
+                </p>
+            </div>
+
+            {# Column 2: Quick Links (Navigation) #}
+            <div>
+                <h3 class="text-lg font-semibold text-[#333333] mb-4">Quick Links</h3>
+                <ul class="space-y-3">
+                    <li><a href="{{ path('show_recipes') }}" class="text-sm text-gray-600 hover:text-[#9b59b6] transition duration-150">All Recipes</a></li>
+                    <li><a href="{{ path('show_categories') }}" class="text-sm text-gray-600 hover:text-[#9b59b6] transition duration-150">Categories</a></li>
+                    <li><a href="{{ path('show_tips') }}" class="text-sm text-gray-600 hover:text-[#9b59b6] transition duration-150">Tips & Techniques</a></li>
+                    <li><a href="{{ path('show_about') }}" class="text-sm text-gray-600 hover:text-[#9b59b6] transition duration-150">About Us</a></li>
+                </ul>
+            </div>
+
+            {# Column 3: Legal & Help #}
+            <div>
+                <h3 class="text-lg font-semibold text-[#333333] mb-4">Support</h3>
+                <ul class="space-y-3">
+                    <li><a href="" class="text-sm text-gray-600 hover:text-[#9b59b6] transition duration-150">Privacy Policy</a></li>
+                    <li><a href="" class="text-sm text-gray-600 hover:text-[#9b59b6] transition duration-150">Terms of Service</a></li>
+                    <li><a href="" class="text-sm text-gray-600 hover:text-[#9b59b6] transition duration-150">FAQ</a></li>
+                    <li><a href="mailto:contact@cookbook.com" class="text-sm text-gray-600 hover:text-[#9b59b6] transition duration-150">Contact</a></li>
+                </ul>
+            </div>
+
+            {# Column 4: Social Media & Newsletter #}
+            <div>
+                <h3 class="text-lg font-semibold text-[#333333] mb-4">Connect</h3>
+
+                {# Social Media Icons #}
+                <div class="flex space-x-4 mb-6">
+                    <a href="https://facebook.com" aria-label="Facebook" class="text-gray-500 hover:text-[#9b59b6]">
+                        {# Facebook Icon (Example using Heroicons/Tailwind standards) #}
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-3 7h-2.5v-1.5h2.5v1.5zm-5.5 0h-2.5v-1.5h2.5v1.5zm-3 0h-2.5v-1.5h2.5v1.5zm11.5 5h-10v1h10v-1zm0 3h-10v1h10v-1zm0 3h-10v1h10v-1z"/></svg>
+                    </a>
+                    <a href="https://instagram.com" aria-label="Instagram" class="text-gray-500 hover:text-[#9b59b6]">
+                        {# Instagram Icon #}
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.071 1.17.065 1.748.27 2.224.468.484.212.783.513 1.133.863.35.35.65.65.863 1.133.198.476.403 1.054.468 2.224.059 1.266.071 1.646.071 4.85s-.012 3.584-.071 4.85c-.065 1.17-.27 1.748-.468 2.224-.212.484-.513.783-.863 1.133-.35.35-.65.65-1.133.863-.476.198-1.054.403-2.224.468-1.266.059-1.646.071-4.85.071s-3.584-.012-4.85-.071c-1.17-.065-1.748-.27-2.224-.468-.484-.212-.783-.513-1.133-.863-.35-.35-.65-.65-.863-1.133-.198-.476-.403-1.054-.468-2.224-.059-1.266-.071-1.646-.071-4.85s.012-3.584.071-4.85c.065-1.17.27-1.748.468-2.224.212-.484.513-.783.863-1.133.35-.35.65-.65 1.133-.863.476-.198 1.054-.403 2.224-.468 1.266-.059 1.646-.071 4.85-.071zm0-2.163c-3.265 0-3.665.013-4.947.072-1.272.067-2.164.382-2.915.753-.751.371-1.396.936-2.043 1.583-.647.647-1.212 1.292-1.583 2.043-.371.751-.686 1.643-.753 2.915-.059 1.282-.072 1.682-.072 4.947s.013 3.665.072 4.947c.067 1.272.382 2.164.753 2.915.371.751.936 1.396 1.583 2.043.647.647 1.292 1.212 2.043 1.583.751.371 1.643.686 2.915.753 1.282.059 1.682.072 4.947.072s3.665-.013 4.947-.072c1.272-.067 2.164-.382 2.915-.753.751-.371 1.396-.936 2.043-1.583.647-.647 1.212-1.292 1.583-2.043.371-.751.686-1.643.753-2.915.059-1.282.072-1.682.072-4.947s-.013-3.665-.072-4.947c-.067-1.272-.382-2.164-.753-2.915-.371-.751-.936-1.396-1.583-2.043-.647-.647-1.292-1.212-2.043-1.583-.751-.371-1.643-.686-2.915-.753-1.282-.059-1.682-.072-4.947-.072zm0 5.834c-2.31 0-4.183 1.873-4.183 4.183s1.873 4.183 4.183 4.183 4.183-1.873 4.183-4.183-1.873-4.183-4.183-4.183zm0 6.834c-1.463 0-2.651-1.188-2.651-2.651s1.188-2.651 2.651-2.651 2.651 1.188 2.651 2.651-1.188 2.651-2.651 2.651zm4.853-6.903c0-.393-.32-.713-.713-.713s-.713.32-.713.713.32.713.713.713.713-.32.713-.713z"/></svg>
+                    </a>
+                </div>
+
+                {# Newsletter Sign-up (Example form structure) #}
+                <form>
+                    <label for="newsletter" class="text-sm font-medium text-[#333333] mb-2 block">Subscribe to our Newsletter</label>
+                    <div class="flex">
+                        <input type="email" id="newsletter" placeholder="Enter your email"
+                               class="flex-grow p-2 text-sm rounded-s-lg border border-gray-300 focus:ring-[#9b59b6] focus:border-[#9b59b6] outline-none">
+                        <button type="submit"
+                                class="p-2 text-sm font-medium text-white bg-[#9b59b6] rounded-e-lg hover:bg-[#834ea2] transition duration-150">
+                            Sign Up
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</footer>

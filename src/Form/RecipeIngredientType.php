@@ -20,26 +20,27 @@ class RecipeIngredientType extends AbstractType
             ->add('quantity', NumberType::class, [
                 'label' => 'Quantity',
                 'html5' => true,
-                'attr' => ['placeholder' => 'e.g. 250'],
+                'attr' => [
+                    'placeholder' => 'e.g. 250',
+                    'class' => 'text-right ml-6 mt-1 w-max border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
+                ],
             ])
             ->add('unit', TextType::class, [
                 'label' => 'Unit',
-                'attr' => ['placeholder' => 'e.g. grams, cups'],
+                'attr' => [
+                    'placeholder' => 'e.g. grams, cups',
+                    'class' => 'ml-6 mt-1 w-max border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
+                ],
             ])
             ->add('ingredient', EntityType::class, [
                 'class' => Ingredient::class,
                 'choice_label' => 'name',
                 'label' => 'Ingredient',
-                'placeholder' => 'Choose an Ingredient',
+                'attr' => [
+                    'placeholder' => 'Choose an Ingredient',
+                    'class' => 'ml-6 mt-1 w-max border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
+                ],
             ]);
-//            ->add('recipe', EntityType::class, [
-//                'class' => Recipe::class,
-//                'choice_label' => 'id',
-//            ])
-//            ->add('ingredient', EntityType::class, [
-//                'class' => Ingredient::class,
-//                'choice_label' => 'id',
-//            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
