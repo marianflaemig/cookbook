@@ -40,4 +40,12 @@ class RecipeRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    public function searchByPhrase(string $searchPhrase)
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.title LIKE :searchPhrase')
+            ->setParameter('searchPhrase', '%'.$searchPhrase.'%')
+            ->getQuery()
+            ->getResult();
+    }
 }

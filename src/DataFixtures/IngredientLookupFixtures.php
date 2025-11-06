@@ -22,15 +22,27 @@ class IngredientLookupFixtures extends Fixture
         'Baking Powder',
         'Vanilla Extract',
         'Olive Oil',
-        'Oil',
         'Black Pepper',
         'Garlic Cloves',
         'Chicken Breast',
+        'Beef Chuck',
         'Onion',
         'Potato',
-        'Vinegar',
-        'Broth',
-        'Mustard'
+        'Vinegar (White)',
+        'Broth (Beef)',
+        'Red Wine',
+        'Firm Tofu',
+        'Broccoli',
+        'Soy Sauce',
+        'Spaghetti',
+        'Lemon',
+        'Parmesan Cheese',
+        'Sourdough Starter',
+        'Cinnamon',
+        'Granny Smith Apple',
+        'Brown Sugar',
+        'Heavy Cream',
+        'Mustard (Dijon)'
     ];
 
     public function load(ObjectManager $manager): void
@@ -40,6 +52,11 @@ class IngredientLookupFixtures extends Fixture
             $ingredient = new Ingredient();
             $ingredient->setName($name);
             $manager->persist($ingredient);
+
+            // Add a reference for other fixtures to access this ingredient object
+            // The reference key is a 'slug' version of the ingredient name.
+            $slug = strtolower(str_replace([' ', '(', ')'], ['_', '', ''], $name));
+            $this->addReference('ingredient_' . $slug, $ingredient);
         }
 
         // Execute all the INSERT queries to the database

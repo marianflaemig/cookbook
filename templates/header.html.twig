@@ -38,8 +38,7 @@
                 ] %}
 
                 {% for item in nav_items %}
-                    {# Example logic: assumes 'Recipes' is the active page for this example #}
-                    {% set is_active = (item.label == 'Recipes') ? true : false %}
+                    {% set is_active = (item.label == activePage) ? true : false %}
                     <a href="{{ path(item.route) }}"
                        class="
                            text-sm font-medium transition duration-150 ease-in-out

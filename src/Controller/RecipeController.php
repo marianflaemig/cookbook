@@ -31,7 +31,7 @@ class RecipeController extends AbstractController
     }
 
     #[Route('/recipes', name: 'show_recipes', methods: ['GET'])]
-    public function index(): Response
+    public function showALl(): Response
     {
         $recipes = $this->recipeRepository->findAll();
 
@@ -40,10 +40,10 @@ class RecipeController extends AbstractController
             $deleteForms[$recipe->getId()] = $this->_createDeleteForm($recipe)->createView();
         }
 
-        return $this->render('recipe/index.html.twig', [
+        return $this->render('recipe/showAll.html.twig', [
             'recipes' => $recipes,
             'deleteForms' => $deleteForms,
-            'active_page' => 'Recipes'
+            'activePage' => 'Recipes'
         ]);
     }
 
@@ -57,13 +57,20 @@ class RecipeController extends AbstractController
         return $this->render('recipe/show.html.twig', [
             'recipe' => $recipe,
             'deleteForm' => $deleteForm,
+            'activePage' => ''
         ]);
     }
 
-    #[Route('/search/{$searchPhrase}', name: 'search_recipe', methods: ['GET'])]
-    public function search(Request $request, string $searchPhrase): Response
+    #[Route('/search/', name: 'search_recipe', methods: ['GET'])]
+    public function search(Request $request): Response
     {
+        $searchPhrase = $request->query->get('search_phrase');
+        $recipes = $this->recipeRepository->searchByPhrase($searchPhrase);
 
+        return $this->render('recipe/showAll.html.twig', [
+            'recipes' => $recipes,
+            'activePage' => ''
+        ]);
     }
 
     #[Route('/create', name: 'create_recipe')]
@@ -105,6 +112,7 @@ class RecipeController extends AbstractController
 
         return $this->render('recipe/create.html.twig', [
             'form' => $form->createView(),
+            'activePage' => ''
         ]);
     }
 
@@ -156,6 +164,7 @@ class RecipeController extends AbstractController
 
         return $this->render('recipe/create.html.twig', [
             'form' => $form->createView(),
+            'activePage' => ''
         ]);
     }
 

@@ -55,32 +55,34 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-            {# Featured Recipe Card 1: Potato Salad #}
+            {# Featured Recipe Card Random Recipe 1 #}
             {% include '/main/recipe_card.html.twig' with {
-                id: 1,
-                title: 'Potato Salad with Vinegar and Oil - A Classic',
-                prep: '30 min',
-                cook: '25 min',
+                id: recipe1.id,
+                title: recipe1.title,
+                prep: recipe1.prepTime,
+                cook: recipe1.cookTime,
                 route: 'show_recipe',
                 image_url: ''
             } %}
 
-            {# Featured Recipe Card 2: Simple Beef Stew #}
+            {# Featured Recipe Card Random Recipe 2 #}
             {% include '/main/recipe_card.html.twig' with {
-                id: 2,
-                title: 'Hearty Beef Stew',
-                prep: '20 min',
-                cook: '2 hours',
-                route: 'show_recipe'
+                id: recipe2.id,
+                title: recipe2.title,
+                prep: recipe2.prepTime,
+                cook: recipe2.cookTime,
+                route: 'show_recipe',
+                image_url: ''
             } %}
 
-            {# Featured Recipe Card 3: Apple Pie #}
+            {# Featured Recipe Card Random Recipe 3 #}
             {% include '/main/recipe_card.html.twig' with {
-                id: 3,
-                title: 'Grandma’s Best Apple Pie',
-                prep: '45 min',
-                cook: '1 hour',
-                route: 'show_recipe'
+                id: recipe3.id,
+                title: recipe3.title,
+                prep: recipe3.prepTime,
+                cook: recipe3.cookTime,
+                route: 'show_recipe',
+                image_url: ''
             } %}
 
         </div>
