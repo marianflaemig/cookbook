@@ -37,7 +37,7 @@ Cooking Made Simple
                 </div>
 
                 <div class="mt-10 md:mt-0">
-                    <div class="h-96 w-full rounded-xl overflow-hidden shadow-2xl mask-radial-at-center">
+                    <div class="w-full h-full rounded-xl overflow-hidden shadow-2xl mask-radial-at-center">
                         <img class=""
                              src="{{ asset('images/Gemini_Generated_Image_je1v74je1v74je1v.png') }}" alt="">
                     </div>
@@ -56,33 +56,34 @@ Cooking Made Simple
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
             {# Featured Recipe Card Random Recipe 1 #}
-            {% include '/main/recipe_card.html.twig' with {
-                id: recipe1.id,
-                title: recipe1.title,
-                prep: recipe1.prepTime,
-                cook: recipe1.cookTime,
+            {% include '/main/_recipe_card.html.twig' with {
+                id: randRecipe1.id,
+                title: randRecipe1.title,
+                prep: randRecipe1.prepTime,
+                cook: randRecipe1.cookTime,
                 route: 'show_recipe',
-                image_url: recipe1.image
+                image_url: randRecipe1.image
             } %}
 
             {# Featured Recipe Card Random Recipe 2 #}
-            {% include '/main/recipe_card.html.twig' with {
-                id: recipe2.id,
-                title: recipe2.title,
-                prep: recipe2.prepTime,
-                cook: recipe2.cookTime,
+            {% include '/main/_recipe_card.html.twig' with {
+                id: randRecipe2.id,
+                title: randRecipe2.title,
+                prep: randRecipe2.prepTime,
+                cook: randRecipe2.cookTime,
                 route: 'show_recipe',
+                image_url: randRecipe2.image
 
             } %}
 
             {# Featured Recipe Card Random Recipe 3 #}
-            {% include '/main/recipe_card.html.twig' with {
-                id: recipe3.id,
-                title: recipe3.title,
-                prep: recipe3.prepTime,
-                cook: recipe3.cookTime,
+            {% include '/main/_recipe_card.html.twig' with {
+                id: randRecipe3.id,
+                title: randRecipe3.title,
+                prep: randRecipe3.prepTime,
+                cook: randRecipe3.cookTime,
                 route: 'show_recipe',
-                image_url: recipe3.image
+                image_url: randRecipe3.image
             } %}
 
         </div>

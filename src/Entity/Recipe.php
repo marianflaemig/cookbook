@@ -38,8 +38,11 @@ class Recipe
      * @var Collection<int, RecipeIngredient>
      */
     #[ORM\OneToMany(targetEntity: RecipeIngredient::class, mappedBy: 'recipe', cascade: ['persist'], orphanRemoval: true)]
-
     private Collection $recipeIngredients;
+
+    #[ORM\ManyToOne(inversedBy: 'recipes')]
+    private ?Category $category = null;
+
     public function __construct()
     {
         $this->recipeIngredients = new ArrayCollection();
@@ -149,5 +152,17 @@ class Recipe
     public function setImage(?string $image): void
     {
         $this->image = $image;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): static
+    {
+        $this->category = $category;
+
+        return $this;
     }
 }

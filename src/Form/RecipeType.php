@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Recipe;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -50,6 +52,16 @@ class RecipeType extends AbstractType
                     'class' => 'mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-[#9b59b6] focus:border-[#9b59b6] transition duration-150',
                     'placeholder' => 'e.g. 75'
                 ],
+            ])
+            ->add('category', EntityType::class, [
+                'class' =>  Category::class,
+                'choice_label' => 'name',
+                'label' => 'Recipe Category',
+                'required' => false,
+                'placeholder' => 'Select a recipe category',
+                'attr' => [
+                    'class' => $inputClasses
+                ]
             ])
             // FileType needs specialized classes in Twig since field rendering is complex
             ->add('image', FileType::class, [

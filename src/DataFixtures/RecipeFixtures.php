@@ -2,9 +2,11 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Category;
 use App\Entity\Ingredient;
 use App\Entity\Recipe; // Ensure this matches your actual Recipe entity namespace
 use App\Entity\RecipeIngredient;
+use App\DataFixtures\CategoryFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -29,6 +31,7 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
             'prep_time' => 45,
             'cook_time' => 75,
             'instructions' => "Prepare pie crust and chill for 30 minutes. Peel and slice apples, mixing them with cinnamon and sugar. Fill the crust and bake at 375°F (190°C) until golden brown. Let cool completely before serving.",
+            'category_ref' => 'deserts_baking',
             'ingredients' => [
                 ['name' => 'All-Purpose Flour', 'quantity' => 2.5, 'unit' => 'cups'],
                 ['name' => 'Unsalted Butter', 'quantity' => 1, 'unit' => 'cup'],
@@ -42,6 +45,7 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
             'prep_time' => 25,
             'cook_time' => 150,
             'instructions' => "Sear the beef chuck in a Dutch oven. Add vegetables, broth, and red wine. Simmer gently over low heat for at least 2.5 hours until the beef is fork-tender. Season with salt and pepper to taste.",
+            'category_ref' => 'soups_stews',
             'ingredients' => [
                 ['name' => 'Beef Chuck', 'quantity' => 2, 'unit' => 'lbs'],
                 ['name' => 'Onion', 'quantity' => 1, 'unit' => 'unit'],
@@ -55,6 +59,7 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
             'prep_time' => 15,
             'cook_time' => 20,
             'instructions' => "Slice the firm tofu and pan-fry until crispy. Add broccoli and stir-fry for 5 minutes. Combine soy sauce, sriracha, and ginger for the sauce, then toss with tofu and vegetables until heated through.",
+            'category_ref' => 'main_dishes',
             'ingredients' => [
                 ['name' => 'Firm Tofu', 'quantity' => 1, 'unit' => 'block'],
                 ['name' => 'Broccoli', 'quantity' => 1, 'unit' => 'head'],
@@ -68,6 +73,7 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
             'prep_time' => 10,
             'cook_time' => 15,
             'instructions' => "Cook spaghetti according to package directions. Sauté garlic in olive oil. Add lemon zest and juice. Toss the drained pasta with the sauce and Parmesan cheese, using a little pasta water if needed.",
+            'category_ref' => 'main_dishes',
             'ingredients' => [
                 ['name' => 'Spaghetti', 'quantity' => 12, 'unit' => 'oz'],
                 ['name' => 'Garlic Cloves', 'quantity' => 4, 'unit' => 'units'],
@@ -80,6 +86,7 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
             'prep_time' => 30,
             'cook_time' => 25,
             'instructions' => "Boil potatoes until fork-tender. Peel while warm and slice thinly. Mix vinegar, mustard, salt, and pepper into the broth. Pour dressing over the potatoes and stir gently. Add chopped onions and chives (optional).",
+            'category_ref' => 'main_dishes',
             'ingredients' => [
                 ['name' => 'Potato', 'quantity' => 1, 'unit' => 'kg'],
                 ['name' => 'Broth (Beef)', 'quantity' => 250, 'unit' => 'ml'],
@@ -141,11 +148,15 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
                 ];
             }
 
+            $categoryRefs = array_keys(CategoryFixtures::CATEGORIES); // Assuming CategoryFixtures is the proper way to get the keys
+            $randomCategory = $categoryRefs[array_rand($categoryRefs)];
+
             $randomData = [
                 'title' => $title,
                 'prep_time' => $prepTimes[array_rand($prepTimes)],
                 'cook_time' => $cookTimes[array_rand($cookTimes)],
                 'instructions' => "This is a placeholder instruction block for the randomly generated recipe: **{$title}**. The basic steps involve mixing, heating, and serving. Always remember to taste and adjust your seasoning!",
+                'category_ref' => strtolower(str_replace(' ', '_', str_replace(['&', ' '], '', $randomCategory))),
                 'ingredients' => $ingredients
             ];
 
@@ -167,6 +178,14 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
         $recipe->setDescription($data['instructions']);
         $recipe->setPrepTime($data['prep_time']);
         $recipe->setCookTime($data['cook_time']);
+
+        if (isset($data['category_ref'])) {
+            $categoryReference = 'category_' . $data['category_ref'];
+            if ($this->hasReference($categoryReference, Category::class)) {
+                $categoryEntity = $this->getReference($categoryReference, Category::class);
+                $recipe->setCategory($categoryEntity);
+            }
+        }
         $recipe->setImage(null); // Image will be handled via upload/placeholder
 
         // Create RecipeIngredient entities
@@ -209,6 +228,7 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             IngredientLookupFixtures::class,
+            Category::class,
         ];
     }
 }

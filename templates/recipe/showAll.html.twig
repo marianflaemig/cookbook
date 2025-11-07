@@ -23,7 +23,7 @@
 
             {% for recipe in recipes %}
                 {# Use the reusable card component #}
-                {% include 'main/recipe_card.html.twig' with {
+                {% include 'main/_recipe_card.html.twig' with {
                     id: recipe.id,
                     title: recipe.title,
                     prep: recipe.prepTime,

@@ -27,9 +27,9 @@ class MainController extends AbstractController
 
         return $this->render('main/index.html.twig', [
             'form' => $form->createView(),
-            'recipe1' => $recipes[$recipeKeys[0]],
-            'recipe2' => $recipes[$recipeKeys[1]],
-            'recipe3' => $recipes[$recipeKeys[2]],
+            'randRecipe1' => $recipes[$recipeKeys[0]],
+            'randRecipe2' => $recipes[$recipeKeys[1]],
+            'randRecipe3' => $recipes[$recipeKeys[2]],
             'activePage' => ''
         ]);
     }
@@ -38,7 +38,7 @@ class MainController extends AbstractController
     public function categories(): Response
     {
         return $this->render('main/categories.html.twig', [
-            'activePage' => 'Categories'
+            'activePage' => 'Category'
         ]);
     }
 
