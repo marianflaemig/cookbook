@@ -15,14 +15,20 @@
     {% endblock %}
 </head>
 
+<body class="bg-gray-200 flex flex-col min-h-screen">
+
 {% block header %}
     {% include 'header.html.twig' %}
 {% endblock %}
 
-<body class="bg-gray-200">
-{% block body %}
+<main class="flex-grow">
 
-{% endblock %}
+    {% block body %}
+
+    {% endblock %}
+
+</main>
+
 </body>
 
 {% block footer %}

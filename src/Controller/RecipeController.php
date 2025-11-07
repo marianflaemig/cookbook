@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Recipe;
 use App\Form\DeleteRecipeType;
 use App\Form\RecipeType;
+use App\Repository\CategoriesRepository;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,11 +23,13 @@ class RecipeController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
     private RecipeRepository $recipeRepository;
+    private CategoriesRepository $categoriesRepository;
 
-    public function __construct(EntityManagerInterface $entityManager, RecipeRepository $recipeRepository)
+    public function __construct(EntityManagerInterface $entityManager, RecipeRepository $recipeRepository, CategoriesRepository $categoriesRepository)
     {
         $this->entityManager = $entityManager;
         $this->recipeRepository = $recipeRepository;
+        $this->categoriesRepository = $categoriesRepository;
     }
 
     #[Route('/recipe/{id}', name: 'show_recipe', methods: ['GET'])]
@@ -60,6 +63,24 @@ class RecipeController extends AbstractController
         ]);
     }
 
+    #[Route('/recipes/category/{slug}', name: 'show_recipes_by_category', methods: ['GET'])]
+    public function showALlByCategory(string $slug): Response
+    {
+        $category = $this->categoriesRepository->findOneBy(['slug' => $slug]);
+
+        if(!$category) {
+            throw $this->createNotFoundException('The requested category does not exist.');
+        }
+
+        $recipes = $this->recipeRepository->findBy(['category' => $category]);
+
+        return $this->render('recipe/showAll.html.twig', [
+            'activePage' => '',
+            'recipes' => $recipes,
+            'category' => $category,
+        ]);
+    }
+
     #[Route('/search/', name: 'search_recipe', methods: ['GET'])]
     public function search(Request $request): Response
     {
@@ -67,8 +88,9 @@ class RecipeController extends AbstractController
         $recipes = $this->recipeRepository->searchByPhrase($searchPhrase);
 
         return $this->render('recipe/showAll.html.twig', [
+            'activePage' => '',
             'recipes' => $recipes,
-            'activePage' => ''
+            'search_phrase' => $searchPhrase,
         ]);
     }
 

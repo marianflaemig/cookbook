@@ -55,36 +55,17 @@ Cooking Made Simple
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-            {# Featured Recipe Card Random Recipe 1 #}
-            {% include '/main/_recipe_card.html.twig' with {
-                id: randRecipe1.id,
-                title: randRecipe1.title,
-                prep: randRecipe1.prepTime,
-                cook: randRecipe1.cookTime,
-                route: 'show_recipe',
-                image_url: randRecipe1.image
-            } %}
-
-            {# Featured Recipe Card Random Recipe 2 #}
-            {% include '/main/_recipe_card.html.twig' with {
-                id: randRecipe2.id,
-                title: randRecipe2.title,
-                prep: randRecipe2.prepTime,
-                cook: randRecipe2.cookTime,
-                route: 'show_recipe',
-                image_url: randRecipe2.image
-
-            } %}
-
-            {# Featured Recipe Card Random Recipe 3 #}
-            {% include '/main/_recipe_card.html.twig' with {
-                id: randRecipe3.id,
-                title: randRecipe3.title,
-                prep: randRecipe3.prepTime,
-                cook: randRecipe3.cookTime,
-                route: 'show_recipe',
-                image_url: randRecipe3.image
-            } %}
+            {% for recipe in recipes %}
+                {# Feature latest recipes #}
+                {% include '/main/_recipe_card.html.twig' with {
+                    id: recipe.id,
+                    title: recipe.title,
+                    prep: recipe.prepTime,
+                    cook: recipe.cookTime,
+                    route: 'show_recipe',
+                    image_url: recipe.image
+                } %}
+            {% endfor %}
 
         </div>
 

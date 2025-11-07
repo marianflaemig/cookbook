@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Form\RecipeIngredientType;
+use App\Repository\CategoriesRepository;
 use App\Repository\RecipeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,32 +13,32 @@ use Symfony\Component\Routing\Attribute\Route;
 class MainController extends AbstractController
 {
     private RecipeRepository $recipeRepository;
+    private CategoriesRepository $categoriesRepository;
 
-    public function __construct(RecipeRepository $recipeRepository){
+    public function __construct(RecipeRepository $recipeRepository, CategoriesRepository $categoriesRepository){
         $this->recipeRepository = $recipeRepository;
+        $this->categoriesRepository = $categoriesRepository;
     }
+
     #[Route('/', name: 'index', methods: ['GET'])]
     public function index(): Response
     {
-        $form = $this->createForm(RecipeIngredientType::class);
-
-        $recipes = $this->recipeRepository->findAll();
-        $recipeKeys = array_rand($recipes, 3);
+        $recipes = $this->recipeRepository->getLatestRecipes(3);
 
         return $this->render('main/index.html.twig', [
-            'form' => $form->createView(),
-            'randRecipe1' => $recipes[$recipeKeys[0]],
-            'randRecipe2' => $recipes[$recipeKeys[1]],
-            'randRecipe3' => $recipes[$recipeKeys[2]],
-            'activePage' => ''
+            'activePage' => '',
+            'recipes' => $recipes,
         ]);
     }
 
     #[Route('/categories', name: 'show_categories', methods: ['GET'])]
     public function categories(): Response
     {
+        $categories = $this->categoriesRepository->findAll();
+
         return $this->render('main/categories.html.twig', [
-            'activePage' => 'Category'
+            'activePage' => 'Category',
+            'categories' => $categories
         ]);
     }
 

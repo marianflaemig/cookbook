@@ -16,7 +16,16 @@ class RecipeRepository extends ServiceEntityRepository
         parent::__construct($registry, Recipe::class);
     }
 
-    public function searchByPhrase(string $searchPhrase)
+    public function getLatestRecipes(int $limit = 3): array
+    {
+        return $this->createQueryBuilder('recipe')
+            ->orderBy('recipe.createdAt', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function searchByPhrase(string $searchPhrase): array
     {
         return $this->createQueryBuilder('recipe')
 

@@ -228,7 +228,7 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             IngredientLookupFixtures::class,
-            Category::class,
+            CategoryFixtures::class,
         ];
     }
 }

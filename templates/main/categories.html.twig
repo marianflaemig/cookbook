@@ -1,10 +1,32 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Recipe Categories{% endblock %}
+
 {% block body %}
+    <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
 
+        <h1 class="text-4xl font-extrabold text-[#1a1a1a] mb-4 border-b-2 border-gray-100 pb-2">
+            Browse All Categories
+        </h1>
+        <p class="text-xl text-gray-600 mb-10">
+            Find the perfect dish for any occasion, from simple sides to decadent desserts.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for category in categories %}
+                {# Card for each Category #}
+                <a href="{{ path('show_recipes_by_category', {'slug': category.slug}) }}"
+                   class="block p-6 bg-white rounded-lg shadow-md hover:shadow-xl hover:ring-2 hover:ring-[#9b59b6] transition duration-200">
+                    <div class="text-2xl font-bold text-[#1a1a1a]">{{ category.name }}</div>
+                    <p class="text-sm text-gray-500 mt-1">
+                        {{ category.recipes|length }} Recipe{% if category.recipes|length != 1 %}s{% endif %}
+                    </p>
+                    <span class="mt-4 inline-block text-sm font-semibold text-[#9b59b6]">
+                        View Recipes &rarr;
+                    </span>
+                </a>
+            {% endfor %}
+        </div>
+
+    </div>
 {% endblock %}
-
-{% block title %}
-
-{% endblock %}
-
