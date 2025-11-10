@@ -25,14 +25,14 @@ class RecipeType extends AbstractType
             ->add('title', TextType::class, [
                 'attr' => [
                     'class' => $inputClasses,
-                    'placeholder' => 'e.g., Grandma\'s Best Apple Pie'
+                    'placeholder' => 'e.g., Grandma\'s Best Apple Pie',
                 ]
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Instructions',
                 'attr' => [
-                    'rows' => 8, // Increased rows for better usability
-                    'class' => $inputClasses
+                    'class' => $inputClasses,
+                    'rows' => 8,
                 ],
             ])
             ->add('prepTime', IntegerType::class, [
@@ -54,9 +54,9 @@ class RecipeType extends AbstractType
                 ],
             ])
             ->add('category', EntityType::class, [
-                'class' =>  Category::class,
+                'class' => Category::class,
                 'choice_label' => 'name',
-                'label' => 'Recipe Category',
+                'label' => false,
                 'required' => false,
                 'placeholder' => 'Select a recipe category',
                 'attr' => [
@@ -79,9 +79,8 @@ class RecipeType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-                'label' => 'Ingredients',
-            ])
-        ;
+                'label' => false
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -30,19 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let newForm = prototype.replace(/__name__/g, index);
         index++;
 
-        // --- CUSTOM WRAPPER START ---
-        // Twig form_row renders label+errors+widget, so we wrap all 3 widgets in a grid container
-
-        // The newForm variable contains the raw HTML input fields.
-        // We need to extract the raw form_row output for the three fields.
-
-        // This is a complex fix that usually requires pre-rendered partials,
-        // but we can simplify the resulting structure here by using
-        // the structure that Symfony generates.
-
-        // For simplicity and stability, the best approach is to recreate the
-        // exact grid structure we defined above:
-
         const wrapper = document.createElement('div');
         wrapper.innerHTML = newForm;
 
@@ -109,30 +96,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Re-adjust the index if necessary (though the default index check should handle it)
     list.dataset.index = list.children.length;
-
-    // FIX: This part is crucial for correctly rendering nested form rows in Twig.
-    // When using form_row(), Symfony automatically wraps the label, widget, and errors
-    // in a div (usually with class `form-group` or similar). The prototype itself doesn't
-    // know about these wrappers. We manually adjust the existing ingredient field rendering
-    // in the loop to use form_row(field) instead of form_widget(field) to keep consistency.
-    // Since the user provided the Twig with form_widget already,
-    // we manually adjust the JavaScript portion to manage the lack of Symfony's form row divs
-    // or modify the existing Twig logic slightly.
-
-    // Re-checking the existing twig:
-    // {% for ingredientField in form.recipeIngredients %}
-    //     ...
-    //     <div class="flex-grow space-y-2">
-    //         {{ form_widget(ingredientField) }}
-    //     </div>
-    //     ...
-    // {% endfor %}
-    //
-    // It seems the form_widget(ingredientField) renders the inner three widgets without labels/divs,
-    // which is why the previous styling relied heavily on PHP classes.
-
-    // To make the static part match the new grid structure for existing fields:
-    // We need to modify the Twig loop structure to use form_row() for proper wrapping
-    // OR manually adjust classes. Since PHP files are more complete, let's trust the PHP class application
-    // and update the TWIG structure to support the grid layout.
 });

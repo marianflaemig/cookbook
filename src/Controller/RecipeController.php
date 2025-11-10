@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Recipe;
 use App\Form\DeleteRecipeType;
 use App\Form\RecipeType;
@@ -102,33 +103,64 @@ class RecipeController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
 
-            $imageFile = $form->get('image')->getData();
+            $submittedCategoryValue = $request->request->all('recipe')['category'];
 
-            if ($imageFile) {
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $saveFilename = $slugger->slug($originalFilename);
-                $newFilename = $saveFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+            if (is_string($submittedCategoryValue)) {
 
-                try {
-                    $imageFile->move(
-                        $this->getParameter('kernel.project_dir') . '/public/images/recipes',
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    $this->addFlash('error', 'Could not upload file: ' . $e->getMessage());
-                    return $this->redirectToRoute('create_recipe');
+                $categoryName = trim($submittedCategoryValue);
+
+                if (!empty($categoryName)) {
+                    $newCategory = new Category();
+                    $newCategory->setName($categoryName);
+
+                    try {
+                        $this->entityManager->persist($newCategory);
+                        $this->entityManager->flush();
+
+                        $recipe->setCategory($newCategory);
+
+                        // $form->get('category')->getErrors(true)->clear();
+                    } catch (\Exception $exception) {
+                        $this->addFlash('error', 'Database Error: Could not save new category. It may already exist.');
+                        // Re-render form with error
+                        return $this->render('recipe/create.html.twig', [
+                            'form' => $form->createView(),
+                            'activePage' => ''
+                        ]);
+                    }
                 }
-
-                $recipe->setImage($newFilename);
             }
 
-            $this->entityManager->persist($recipe);
-            $this->entityManager->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
 
-            $this->addFlash('success', 'Recipe created successfully.');
-            return $this->redirectToRoute('show_recipes');
+                $imageFile = $form->get('image')->getData();
+
+                if ($imageFile) {
+                    $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    $saveFilename = $slugger->slug($originalFilename);
+                    $newFilename = $saveFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+
+                    try {
+                        $imageFile->move(
+                            $this->getParameter('kernel.project_dir') . '/public/images/recipes',
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        $this->addFlash('error', 'Could not upload file: ' . $e->getMessage());
+                        return $this->redirectToRoute('create_recipe');
+                    }
+
+                    $recipe->setImage($newFilename);
+                }
+
+                $this->entityManager->persist($recipe);
+                $this->entityManager->flush();
+
+                $this->addFlash('success', 'Recipe created successfully.');
+                return $this->redirectToRoute('show_recipes');
+            }
         }
 
         return $this->render('recipe/create.html.twig', [

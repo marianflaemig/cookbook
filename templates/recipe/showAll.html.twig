@@ -1,40 +1,37 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-    <div class="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8 space-y-8">
-        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-            <div>
-                {# Conditional Title for Search Results #}
+    <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8 space-y-8">
+        <div class="flex flex-row justify-between items-center border-b-2 border-gray-100 pb-2">
+                {# Conditional Titles #}
                 {% if search_phrase is defined and search_phrase is not empty %}
-                    <h1 class="text-3xl font-extrabold text-[#1a1a1a] border-b-2 border-gray-100 pb-2">
+                    <h1 class="text-4xl font-extrabold text-[#1a1a1a]">
                         Search Results for: <span class="text-[#9b59b6]">{{ search_phrase }}</span>
                     </h1>
                     <p class="text-gray-600">
                         Found {{ recipes|length }} result{% if recipes|length != 1 %}s{% endif %}.
                     </p>
                 {% elseif category is defined and category is not empty %}
-                    <h1 class="text-3xl font-extrabold text-[#1a1a1a] border-b-2 border-gray-100 pb-2">
+                    <h1 class="text-4xl font-extrabold text-[#1a1a1a]">
                         Recipes in: <span class="text-[#9b59b6]">{{ category.name }}</span>
                     </h1>
                     <p class="text-gray-600">
                         Found {{ recipes|length }} recipe{% if recipes|length != 1 %}s{% endif %}.
                     </p>
                 {% else %}
-                    <h1 class="text-3xl font-extrabold text-[#1a1a1a] border-b-2 border-gray-100 pb-2">
+                    <h1 class="text-4xl font-extrabold text-[#1a1a1a]">
                         All Recipes
                     </h1>
                 {% endif %}
-            </div>
 
-            <a href="{{ path('create_recipe') }}"
-               class="inline-flex items-center text-sm font-medium text-white bg-[#9b59b6] hover:bg-[#834ea2] px-4 py-2 rounded-lg transition duration-150 flex-shrink-0 ml-4">
-                + Add New Recipe
-            </a>
+                <a href="{{ path('create_recipe') }}"
+                   class="inline-flex items-center text-sm font-medium text-white bg-[#9b59b6] hover:bg-[#834ea2] px-4 py-2 rounded-lg transition duration-150 flex-shrink-0 ml-4">
+                    + Add New Recipe
+                </a>
         </div>
 
         {# Recipe Grid #}
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
             {% for recipe in recipes %}
                 {# Use the reusable card component #}
