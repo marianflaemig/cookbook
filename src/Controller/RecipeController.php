@@ -69,7 +69,7 @@ class RecipeController extends AbstractController
     {
         $category = $this->categoriesRepository->findOneBy(['slug' => $slug]);
 
-        if(!$category) {
+        if (!$category) {
             throw $this->createNotFoundException('The requested category does not exist.');
         }
 
@@ -103,64 +103,33 @@ class RecipeController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
-            $submittedCategoryValue = $request->request->all('recipe')['category'];
+            $imageFile = $form->get('image')->getData();
 
-            if (is_string($submittedCategoryValue)) {
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $saveFilename = $slugger->slug($originalFilename);
+                $newFilename = $saveFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
 
-                $categoryName = trim($submittedCategoryValue);
-
-                if (!empty($categoryName)) {
-                    $newCategory = new Category();
-                    $newCategory->setName($categoryName);
-
-                    try {
-                        $this->entityManager->persist($newCategory);
-                        $this->entityManager->flush();
-
-                        $recipe->setCategory($newCategory);
-
-                        // $form->get('category')->getErrors(true)->clear();
-                    } catch (\Exception $exception) {
-                        $this->addFlash('error', 'Database Error: Could not save new category. It may already exist.');
-                        // Re-render form with error
-                        return $this->render('recipe/create.html.twig', [
-                            'form' => $form->createView(),
-                            'activePage' => ''
-                        ]);
-                    }
-                }
-            }
-
-            if ($form->isSubmitted() && $form->isValid()) {
-
-                $imageFile = $form->get('image')->getData();
-
-                if ($imageFile) {
-                    $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                    $saveFilename = $slugger->slug($originalFilename);
-                    $newFilename = $saveFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
-
-                    try {
-                        $imageFile->move(
-                            $this->getParameter('kernel.project_dir') . '/public/images/recipes',
-                            $newFilename
-                        );
-                    } catch (FileException $e) {
-                        $this->addFlash('error', 'Could not upload file: ' . $e->getMessage());
-                        return $this->redirectToRoute('create_recipe');
-                    }
-
-                    $recipe->setImage($newFilename);
+                try {
+                    $imageFile->move(
+                        $this->getParameter('kernel.project_dir') . '/public/images/recipes',
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Could not upload file: ' . $e->getMessage());
+                    return $this->redirectToRoute('create_recipe');
                 }
 
-                $this->entityManager->persist($recipe);
-                $this->entityManager->flush();
-
-                $this->addFlash('success', 'Recipe created successfully.');
-                return $this->redirectToRoute('show_recipes');
+                $recipe->setImage($newFilename);
             }
+
+            $this->entityManager->persist($recipe);
+            $this->entityManager->flush();
+
+            $this->addFlash('success', 'Recipe created successfully.');
+            return $this->redirectToRoute('show_recipes');
         }
 
         return $this->render('recipe/create.html.twig', [
@@ -234,7 +203,7 @@ class RecipeController extends AbstractController
             // 1. Delete the image file from disk
             $imagePath = $recipe->getImage();
             if ($imagePath) {
-                $fileToDelete = $this->getParameter('kernel.project_dir') . '/public' . $imagePath;
+                $fileToDelete = $this->getParameter('kernel.project_dir') . '/public/images/recipes' . $imagePath;
                 if (file_exists($fileToDelete)) {
                     unlink($fileToDelete);
                 }

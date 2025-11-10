@@ -4,7 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Category;
 use App\Entity\Ingredient;
-use App\Entity\Recipe; // Ensure this matches your actual Recipe entity namespace
+use App\Entity\Recipe;
 use App\Entity\RecipeIngredient;
 use App\DataFixtures\CategoryFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -17,11 +17,9 @@ use Symfony\Component\String\Slugger\SluggerInterface;
  */
 class RecipeFixtures extends Fixture implements DependentFixtureInterface
 {
-    private SluggerInterface $slugger;
 
-    public function __construct(SluggerInterface $slugger)
+    public function __construct()
     {
-        $this->slugger = $slugger;
     }
 
     // --- Recipe Data (Simplified arrays for ingredient names) ---

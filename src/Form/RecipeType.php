@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Category;
 use App\Entity\Recipe;
+use App\Form\DataTransformer\CategoryNameToStringTransformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -16,6 +17,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RecipeType extends AbstractType
 {
+    private CategoryNameToStringTransformer $categoryNameToStringTransformer;
+
+    public function __construct(CategoryNameToStringTransformer $categoryNameToStringTransformer)
+    {
+        $this->categoryNameToStringTransformer = $categoryNameToStringTransformer;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // Define reusable input classes for consistency
@@ -53,16 +61,17 @@ class RecipeType extends AbstractType
                     'placeholder' => 'e.g. 75'
                 ],
             ])
-            ->add('category', EntityType::class, [
-                'class' => Category::class,
-                'choice_label' => 'name',
+            ->add('category', TextType::class, [
                 'label' => false,
                 'required' => false,
-                'placeholder' => 'Select a recipe category',
                 'attr' => [
-                    'class' => $inputClasses
+                    'class' => $inputClasses,
+                    'placeholder' => 'Enter a recipe category',
                 ]
-            ])
+            ]);
+        $builder->get('category')->addModelTransformer($this->categoryNameToStringTransformer);
+
+        $builder
             // FileType needs specialized classes in Twig since field rendering is complex
             ->add('image', FileType::class, [
                 'label' => 'Recipe Photo (JPG/PNG)',
