@@ -23,7 +23,7 @@
         "symfony/security-csrf": "7.3.*",
         "symfony/serializer": "7.3.*",
         "symfony/twig-bundle": "7.3.*",
-        "symfony/webpack-encore-bundle": "^2.3",
+        "symfony/webpack-encore-bundle": "*",
         "symfony/yaml": "7.3.*"
     },
     "require-dev": {

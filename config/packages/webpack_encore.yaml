@@ -1,0 +1,4 @@
+# config/packages/webpack_encore.yaml
+webpack_encore:
+    # The path where Encore is building the assets - i.e. Encore.setOutputPath()
+    output_path: '%kernel.project_dir%/public/build'
